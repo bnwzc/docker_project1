@@ -1,25 +1,19 @@
 const express = require('express');
 const mysql = require('mysql2');
 const { MongoClient } = require('mongodb');
-const yaml = require('yamljs');
-const path = require('path');
-const fs = require('fs');
 
 const app = express();
 const PORT = 5002;
 
 
-const userFilePath = path.join(__dirname, 'user.yml');
-const user = yaml.load(userFilePath);
 
 
 const mysqlConnection = mysql.createConnection({
-    host: user.datastore.hostname,
-    user: user.datastore.user,
-    password: user.datastore.password,
-    database: user.datastore.db
+    host: "mysql_db",
+    user: "root",
+    password: "root",
+    database: "project"
 });
-
 
 function getHealthData() {
     return new Promise((resolve, reject) => {
@@ -50,10 +44,10 @@ function calculateStatistics(data) {
 
 
 async function writeToMongoDB(statistics) {
-    const client = new MongoClient('mongodb://host.docker.internal:27017/');
+    const client = new MongoClient('mongodb://root:root@mongo_db:27017/');
     try {
         await client.connect();
-        const db = client.db('result');
+        const db = client.db('project');
         const collection = db.collection('health_weight');
 
         const query = { _id: 'statistics' };

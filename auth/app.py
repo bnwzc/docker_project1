@@ -9,25 +9,11 @@ from pymongo import MongoClient
 import os
 import yaml
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-user_file_path = os.path.join(current_dir, 'user.yml')
-accounts_file_path = os.path.join(current_dir, 'accounts.json')
+
 app = Flask(__name__)
 app.secret_key = 'splat'
-with open(accounts_file_path, 'r') as f:
-    accounts = json.load(f)
-def read_from_mongodb():
-    client = MongoClient('mongodb://root:root@mongo_db:27017/')
-    db = client['project']
-    collection = db['health_weight']
-    
-    statistics = collection.find_one({"_id": "statistics"})
-    client.close()
-    
-    return statistics
 
-
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
@@ -55,3 +41,5 @@ def index():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)
+
+    

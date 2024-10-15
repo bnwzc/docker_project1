@@ -57,23 +57,12 @@ def submit_data():
     db_cursor = None
     try:
         db_conn = mysql.connector.connect(
-            host='host.docker.internal',
-            user=user['datastore']['user'],
-            password=user['datastore']['password'],
-            database=user['datastore']['db']
+            host='mysql_db',
+            user='root',
+            password='root',
+            database='project'
         )
         db_cursor = db_conn.cursor()
-        
-        create_table_query = '''
-        CREATE TABLE IF NOT EXISTS height_weight (
-            id INT NOT NULL AUTO_INCREMENT,
-            name VARCHAR(45) NOT NULL,
-            height INT NOT NULL,
-            weight INT NOT NULL,
-            PRIMARY KEY (id)
-        );
-        '''
-        db_cursor.execute(create_table_query)
         query = "INSERT INTO height_weight (name, height, weight) VALUES (%s, %s, %s)"
         db_cursor.execute(query, (name, height, weight))
 
