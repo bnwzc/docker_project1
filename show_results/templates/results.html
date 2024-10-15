@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Statistics</title>
+</head>
+<body>
+    <h1>Health Statistics</h1>
+    {% if statistics %}
+        <p>Max Height: {{ statistics.max_height }}</p>
+        <p>Max Weight: {{ statistics.max_weight }}</p>
+        <p>Average Height: {{ statistics.avg_height }}</p>
+        <p>Average Weight: {{ statistics.avg_weight }}</p>
+    {% else %}
+        <p>No statistics found.</p>
+    {% endif %}
+    <form action="/logout" method="GET" style="display:inline;">
+        <button type="submit">Logout</button>
+    </form>
+</body>
+</html>
