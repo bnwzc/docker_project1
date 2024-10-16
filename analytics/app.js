@@ -5,9 +5,6 @@ const { MongoClient } = require('mongodb');
 const app = express();
 const PORT = 5002;
 
-
-
-
 const mysqlConnection = mysql.createConnection({
     host: "mysql_db",
     user: "root",
@@ -25,10 +22,9 @@ function getHealthData() {
     });
 }
 
-
 function calculateStatistics(data) {
     if (data.length === 0) {
-        return { max_height: 0, max_weight: 0, avg_height: 0, avg_weight: 0 };
+        return { max_height: 0, max_weight: 0, avg_height: 0, avg_weight: 0, min_height: 0, min_weight: 0 };
     }
 
     const heights = data.map(row => row.height);
@@ -37,18 +33,19 @@ function calculateStatistics(data) {
     return {
         max_height: Math.max(...heights),
         max_weight: Math.max(...weights),
-        avg_height: heights.reduce((a, b) => a + b, 0) / heights.length,
-        avg_weight: weights.reduce((a, b) => a + b, 0) / weights.length
+        min_height: Math.min(...heights),
+        min_weight: Math.min(...weights),
+        avg_height: (heights.reduce((a, b) => a + b, 0) / heights.length).toFixed(2),
+        avg_weight: (weights.reduce((a, b) => a + b, 0) / weights.length).toFixed(2)
     };
 }
-
 
 async function writeToMongoDB(statistics) {
     const client = new MongoClient('mongodb://root:root@mongo_db:27017/');
     try {
         await client.connect();
         const db = client.db('project');
-        const collection = db.collection('health_weight');
+        const collection = db.collection('statistics');
 
         const query = { _id: 'statistics' };
         const update = { _id: 'statistics', ...statistics };
@@ -58,7 +55,6 @@ async function writeToMongoDB(statistics) {
         await client.close();
     }
 }
-
 
 app.post('/analytics', async (req, res) => {
     try {
@@ -72,11 +68,6 @@ app.post('/analytics', async (req, res) => {
     }
 });
 
-
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
-
-
-
-

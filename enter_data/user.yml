@@ -1,7 +1,0 @@
-version: 1
-datastore:
-  user: admin
-  password: admin
-  hostname: localhost
-  port: 3306
-  db: height_weight

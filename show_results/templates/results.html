@@ -4,19 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Health Statistics</title>
+    <style>
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
     <h1>Health Statistics</h1>
     {% if statistics %}
-        <p>Max Height: {{ statistics.max_height }}</p>
-        <p>Max Weight: {{ statistics.max_weight }}</p>
-        <p>Average Height: {{ statistics.avg_height }}</p>
-        <p>Average Weight: {{ statistics.avg_weight }}</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Statistic</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Max Height</td>
+                    <td>{{ statistics.max_height }} cm</td>
+                </tr>
+                <tr>
+                    <td>Max Weight</td>
+                    <td>{{ statistics.max_weight }} kg</td>
+                </tr>
+                <tr>
+                    <td>Min Height</td>
+                    <td>{{ statistics.min_height }} cm</td>
+                </tr>
+                <tr>
+                    <td>Min Weight</td>
+                    <td>{{ statistics.min_weight }} kg</td>
+                </tr>
+                <tr>
+                    <td>Average Height</td>
+                    <td>{{ statistics.avg_height }} cm</td>
+                </tr>
+                <tr>
+                    <td>Average Weight</td>
+                    <td>{{ statistics.avg_weight }} kg</td>
+                </tr>
+            </tbody>
+        </table>
     {% else %}
         <p>No statistics found.</p>
     {% endif %}
-    <form action="/logout" method="GET" style="display:inline;">
-        <button type="submit">Logout</button>
-    </form>
 </body>
 </html>
